@@ -27,6 +27,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Processors/PluginManager/OpenEphysPlugin.h"
 
+#include <stdint.h>
+
 class GenericEditor;
 struct SpikeObject;
 class GenericProcessor;
@@ -61,10 +63,10 @@ PLUGIN_API void highlightEditor(GenericEditor* ed);
 /** Gets the timestamp selected on the MessageCenter interface
 Defaults to the first hardware timestamp source or the software one if
 no hardware timestamping is present*/
-PLUGIN_API int64 getGlobalTimestamp();
+PLUGIN_API juce::int64 getGlobalTimestamp();
 
 /** Gets the software timestamp based on a high resolution timer aligned to the start of each processing block */
-PLUGIN_API int64 getSoftwareTimestamp();
+PLUGIN_API juce::int64 getSoftwareTimestamp();
 
 /** Set new recording directory */
 PLUGIN_API void setRecordingDirectory(String dir);

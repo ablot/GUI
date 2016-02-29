@@ -77,12 +77,12 @@ void highlightEditor(GenericEditor* ed)
     getEditorViewport()->makeEditorVisible(ed);
 }
 
-int64 getGlobalTimestamp()
+juce::int64 getGlobalTimestamp()
 {
     return getMessageCenter()->getTimestamp();
 }
 
-int64 getSoftwareTimestamp()
+juce::int64 getSoftwareTimestamp()
 {
 	return getMessageCenter()->getTimestamp(true);
 }

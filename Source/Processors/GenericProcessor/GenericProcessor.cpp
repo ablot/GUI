@@ -575,10 +575,10 @@ void GenericProcessor::setNumSamples(MidiBuffer& events, int sampleIndex)
 }
 
 /** Used to get the timestamp for a given buffer, for a given source node. */
-int64 GenericProcessor::getTimestamp(int channelNum)
+juce::int64 GenericProcessor::getTimestamp(int channelNum)
 {
     int sourceNodeId;
-    int64 ts;
+    juce::int64 ts;
 
     if (channelNum >= 0 && channelNum < channels.size())
         sourceNodeId = channels[channelNum]->sourceNodeId;
@@ -598,7 +598,7 @@ int64 GenericProcessor::getTimestamp(int channelNum)
 }
 
 /** Used to set the timestamp for a given buffer, for a given channel. */
-void GenericProcessor::setTimestamp(MidiBuffer& events, int64 timestamp)
+void GenericProcessor::setTimestamp(MidiBuffer& events, juce::int64 timestamp)
 {
 
     //std::cout << "Setting timestamp to " << timestamp << std:;endl;
@@ -691,7 +691,7 @@ int GenericProcessor::processEventBuffer(MidiBuffer& events)
             }
             else if (*dataptr == TIMESTAMP)
             {
-                int64 ts;
+                juce::int64 ts;
                 memcpy(&ts, dataptr+6, 8);
 
                 uint8 sourceNodeId;

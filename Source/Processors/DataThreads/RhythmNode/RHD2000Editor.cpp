@@ -75,6 +75,25 @@ FPGAchannelList::FPGAchannelList(GenericProcessor* proc_, Viewport* p, FPGAcanva
     autoMeasureButton->addListener(this);
     addAndMakeVisible(autoMeasureButton);
 
+    inputBufferLabel = new Label("Input buffer size","Input buffer size (s):");
+    inputBufferLabel->setEditable(false);
+    inputBufferLabel->setBounds(700,10,150, 25);
+    inputBufferLabel->setColour(Label::textColourId,juce::Colours::white);
+    addAndMakeVisible(inputBufferLabel);
+
+    inputBufferComboBox = new ComboBox("inputBufferSize");
+	inputBufferComboBox->addItem("0.25",1);
+    inputBufferComboBox->addItem("0.33",2);
+	inputBufferComboBox->addItem("0.5",3);
+	inputBufferComboBox->addItem("0.75",4);
+	inputBufferComboBox->addItem("1.0",5);
+	inputBufferComboBox->addItem("1.5",6);
+	inputBufferComboBox->addItem("2.0",7);
+    inputBufferComboBox->setBounds(850,10,100,25);
+    inputBufferComboBox->addListener(this);
+    inputBufferComboBox->setSelectedId(2, dontSendNotification);
+    addAndMakeVisible(inputBufferComboBox);
+
     gains.clear();
     gains.add(0.01);
     gains.add(0.1);
@@ -260,6 +279,7 @@ void FPGAchannelList::disableAll()
 	saveImpedanceButton->setEnabled(false);
 	autoMeasureButton->setEnabled(false);
 	numberingScheme->setEnabled(false);
+	inputBufferComboBox->setEnabled(false);
 }
 
 void FPGAchannelList::enableAll()
@@ -272,6 +292,7 @@ void FPGAchannelList::enableAll()
 	saveImpedanceButton->setEnabled(true);
 	autoMeasureButton->setEnabled(true);
 	numberingScheme->setEnabled(true);
+	inputBufferComboBox->setEnabled(true);
 }
 
 void FPGAchannelList::setNewGain(int channel, float gain)
@@ -310,6 +331,19 @@ void FPGAchannelList::comboBoxChanged(ComboBox* b)
         update();
         p->requestChainUpdate();
     }
+	else if (b == inputBufferComboBox)
+	{
+		SourceNode* p = (SourceNode*)proc;
+		RHD2000Thread* thread = (RHD2000Thread*)p->getThread();
+		float fs = thread->getSampleRate();
+		float sizeSeconds = inputBufferComboBox->getText().getFloatValue();
+		int sizeSamples = (int)(sizeSeconds * fs + .5);  // round to next integer
+		if (sizeSamples != thread->getBufferSize())
+		{
+			std::cout << "Changing input buffer size from " << thread->getBufferSize() << " to " << sizeSamples << "\n";
+			thread->setBufferSize(sizeSamples);
+		}
+	}
 }
 
 void FPGAchannelList::updateImpedance(Array<int> streams, Array<int> channels, Array<float> magnitude, Array<float> phase)

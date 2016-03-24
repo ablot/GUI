@@ -102,7 +102,8 @@ RHD2000Thread::RHD2000Thread(SourceNode* sn) : DataThread(sn),
         headstagesArray.add(new RHDHeadstage(static_cast<Rhd2000EvalBoard::BoardDataSource>(i)));
 
     evalBoard = new Rhd2000EvalBoard;
-    dataBuffer = new DataBuffer(2, 10000); // start with 2 channels and automatically resize
+	bufferSize = (int)(0.33 * boardSampleRate + .5);
+    dataBuffer = new DataBuffer(2, bufferSize); // start with 2 channels and automatically resize
 
     // Open Opal Kelly XEM6010 board.
     // Returns 1 if successful, -1 if FrontPanel cannot be loaded, and -2 if XEM6010 can't be found.
@@ -1095,7 +1096,7 @@ bool RHD2000Thread::enableHeadstage(int hsNum, bool enabled, int nStr, int strCh
         std::cout << numChannelsPerDataStream[i] << " ";
     }*/
 
-    dataBuffer->resize(getNumChannels(), 10000);
+    dataBuffer->resize(getNumChannels(), bufferSize);
 
     return true;
 }
@@ -1165,7 +1166,7 @@ void RHD2000Thread::enableAdcs(bool t)
 
     acquireAdcChannels = t;
 
-    dataBuffer->resize(getNumChannels(), 10000);
+    dataBuffer->resize(getNumChannels(), bufferSize);
 
 }
 
@@ -1862,6 +1863,20 @@ void RHD2000Thread::runImpedanceTest(ImpedanceData* data)
 	impedanceThread->stopThreadSafely();
 	impedanceThread->prepareData(data);
 	impedanceThread->startThread();
+}
+
+void RHD2000Thread::setBufferSize(int size)
+{
+	if (!isAcquisitionActive() && bufferSize > 0 && size != bufferSize)
+	{
+		bufferSize = size;
+		dataBuffer->resize(getNumChannels(), bufferSize);
+	}
+}
+
+int RHD2000Thread::getBufferSize()
+{
+	return bufferSize;
 }
 
 

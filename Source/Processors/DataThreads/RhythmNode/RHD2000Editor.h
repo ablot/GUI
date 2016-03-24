@@ -87,6 +87,8 @@ private:
     ScopedPointer<ToggleButton> autoMeasureButton;
     ScopedPointer<ComboBox> numberingScheme;
     ScopedPointer<Label> numberingSchemeLabel;
+	ScopedPointer<Label> inputBufferLabel;
+	ScopedPointer<ComboBox> inputBufferComboBox;
     OwnedArray<Label> staticLabels;
     OwnedArray<FPGAchannelComponent> channelComponents;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FPGAchannelList);

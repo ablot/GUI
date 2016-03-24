@@ -134,6 +134,9 @@ public:
 
 	static DataThread* createDataThread(SourceNode* sn);
 
+	void setBufferSize(int size);
+	int getBufferSize();
+
 private:
 
     bool enableHeadstage(int hsNum, bool enabled, int nStr = 1, int strChans = 32);
@@ -213,6 +216,9 @@ private:
 
     // Sync ouput divide factor
     uint16 clockDivideFactor;
+
+	// input buffer size
+	int bufferSize;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RHD2000Thread);
 };

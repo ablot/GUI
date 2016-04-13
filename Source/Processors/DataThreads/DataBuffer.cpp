@@ -24,7 +24,7 @@
 #include "DataBuffer.h"
 
 DataBuffer::DataBuffer(int chans, int size)
-    : abstractFifo(size), buffer(chans, size), numChans(chans)
+    : abstractFifo(size), buffer(chans, size), numChans(chans), lastTimestamp(0)
 {
     timestampBuffer.malloc(size);
     eventCodeBuffer.malloc(size);
@@ -109,7 +109,8 @@ int DataBuffer::readAllFromBuffer(AudioSampleBuffer& data, uint64* timestamp, ui
     }
     else
     {
-        memcpy(timestamp, timestampBuffer+startIndex2, 8);
+		(*timestamp) = lastTimestamp;
+//        memcpy(timestamp, timestampBuffer+startIndex1, 8);
     }
 
     if (blockSize2 > 0)
@@ -128,6 +129,7 @@ int DataBuffer::readAllFromBuffer(AudioSampleBuffer& data, uint64* timestamp, ui
     }
 
     abstractFifo.finishedRead(numItems);
+	lastTimestamp = (*timestamp);
 
     return numItems;
 

@@ -91,7 +91,7 @@ FPGAchannelList::FPGAchannelList(GenericProcessor* proc_, Viewport* p, FPGAcanva
 	inputBufferComboBox->addItem("2.0",7);
     inputBufferComboBox->setBounds(850,10,100,25);
     inputBufferComboBox->addListener(this);
-    inputBufferComboBox->setSelectedId(2, dontSendNotification);
+    inputBufferComboBox->setSelectedId(5, sendNotification);
     addAndMakeVisible(inputBufferComboBox);
 
     gains.clear();
@@ -106,7 +106,6 @@ FPGAchannelList::FPGAchannelList(GenericProcessor* proc_, Viewport* p, FPGAcanva
     gains.add(100);
     gains.add(500);
     gains.add(1000);
-
 
     update();
 }

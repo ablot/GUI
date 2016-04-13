@@ -1503,7 +1503,7 @@ bool RHD2000Thread::updateBuffer()
     //cout << "Number of 16-bit words in FIFO: " << evalBoard->numWordsInFifo() << endl;
     //cout << "Block size: " << blockSize << endl;
    
-	//std::cout << "Current number of words: " <<  evalBoard->numWordsInFifo() << " for " << blockSize << std::endl;
+//	std::cout << "Current number of words: " <<  evalBoard->numWordsInFifo() << " for " << blockSize << std::endl;
     if (evalBoard->isUSB3() || evalBoard->numWordsInFifo() >= blockSize)
     {
 		bool return_code;
@@ -1514,7 +1514,7 @@ bool RHD2000Thread::updateBuffer()
 		int auxIndex, chanIndex;
 		int numStreams = enabledStreams.size();
 		int nSamps = Rhd2000DataBlock::getSamplesPerDataBlock(evalBoard->isUSB3());
-		
+
 		//evalBoard->printFIFOmetrics();
         for (int samp = 0; samp < nSamps; samp++)
         {

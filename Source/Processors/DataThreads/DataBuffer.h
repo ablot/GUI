@@ -65,6 +65,7 @@ private:
     HeapBlock<uint64> eventCodeBuffer;
 
     int numChans;
+	uint64 lastTimestamp;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DataBuffer);
 

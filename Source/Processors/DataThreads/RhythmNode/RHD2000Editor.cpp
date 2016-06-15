@@ -900,16 +900,15 @@ void RHD2000Editor::buttonEvent(Button* button)
 
 }
 
-void RHD2000Editor::channelChanged(int chan)
+void RHD2000Editor::channelChanged (int channel, bool /*newState*/)
 {
     for (int i = 0; i < 2; i++)
     {
         if (electrodeButtons[i]->getToggleState())
         {
-            electrodeButtons[i]->setChannelNum(chan);
+            electrodeButtons[i]->setChannelNum (channel);
             electrodeButtons[i]->repaint();
-            board->setDACchannel(i, chan);
-
+            board->setDACchannel (i, channel);
         }
     }
 }
@@ -1471,8 +1470,11 @@ void AudioInterface::paint(Graphics& g)
 // Clock Divider options
 ClockDivideInterface::ClockDivideInterface(RHD2000Thread* board_,
                                            RHD2000Editor* editor_) :
-   board(board_)
+   name("Clock Divider")
+ , lastDivideRatioString("1")
+ , board(board_)
  , editor(editor_)
+ , actualDivideRatio(1)
  
 {
     divideRatioSelection = new Label("Clock Divide", lastDivideRatioString); 

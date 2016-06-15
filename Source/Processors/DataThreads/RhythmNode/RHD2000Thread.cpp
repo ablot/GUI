@@ -107,15 +107,13 @@ RHD2000Thread::RHD2000Thread(SourceNode* sn) : DataThread(sn),
 
     // Open Opal Kelly XEM6010 board.
     // Returns 1 if successful, -1 if FrontPanel cannot be loaded, and -2 if XEM6010 can't be found.
-    File executable = File::getSpecialLocation(File::currentExecutableFile);
 
 #if defined(__APPLE__)
-    const String executableDirectory =
-        executable.getParentDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getFullPathName();
+    File appBundle = File::getSpecialLocation(File::currentApplicationFile);
+    const String executableDirectory = appBundle.getChildFile("Contents/Resources").getFullPathName();
 #else
+    File executable = File::getSpecialLocation(File::currentExecutableFile);
     const String executableDirectory = executable.getParentDirectory().getFullPathName();
-
-
 #endif
 
     std::cout << executableDirectory << std::endl;
@@ -191,10 +189,10 @@ RHD2000Thread::~RHD2000Thread()
 
     //deleteAndZero(dataBlock);
 
-    delete dacStream;
-    delete dacChannels;
-    delete dacThresholds;
-    delete dacChannelsToUpdate;
+    delete[] dacStream;
+    delete[] dacChannels;
+    delete[] dacThresholds;
+    delete[] dacChannelsToUpdate;
 
 }
 
@@ -359,12 +357,11 @@ void RHD2000Thread::initializeBoard()
 {
     String bitfilename;
 
-    File executable = File::getSpecialLocation(File::currentExecutableFile);
-
 #if defined(__APPLE__)
-    const String executableDirectory =
-        executable.getParentDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getFullPathName();
+    File appBundle = File::getSpecialLocation(File::currentApplicationFile);
+    const String executableDirectory = appBundle.getChildFile("Contents/Resources").getFullPathName();
 #else
+    File executable = File::getSpecialLocation(File::currentExecutableFile);
     const String executableDirectory = executable.getParentDirectory().getFullPathName();
 #endif
 
